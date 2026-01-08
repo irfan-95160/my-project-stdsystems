@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สถานที่ท่องเที่ยว | Yala Destinations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. THEME SETUP (Consistent with other pages) --- */
+        :root {
+            --primary: #14362c;
+            --secondary: #e0c074;
+            --light: #fdfdfd;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --nav-height: 80px;
+            --transition: 0.4s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* --- 2. NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: var(--primary); text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .logo i { color: var(--secondary); }
+        
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        
+        .nav-link {
+            text-decoration: none; color: var(--dark); font-weight: 500;
+            position: relative; padding: 5px 0; transition: var(--transition);
+        }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            background: var(--secondary); bottom: 0; left: 0; transition: 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: var(--primary); font-weight: 700; }
+        
+        .nav-btn {
+            background: var(--primary); color: white; padding: 10px 25px;
+            border-radius: 50px; text-decoration: none; font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-btn:hover { background: var(--secondary); color: var(--primary); }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; color: var(--primary); }
+
+        /* --- 3. PAGE HEADER --- */
+        .page-header {
+            height: 40vh;
+            /* รูปปกหน้าท่องเที่ยว */
+            background: linear-gradient(rgba(20, 54, 44, 0.7), rgba(20, 54, 44, 0.5)),
+                        url('https://thailandtourismdirectory.go.th/assets/upload/2021/01/14/20210114979e89d107874944c68205f25972049e102235.jpg');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white;
+            padding-top: var(--nav-height);
+        }
+
+        .header-content h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 10px; }
+        
+        /* --- 4. FILTER SECTION --- */
+        .filter-container {
+            padding: 3rem 5% 1rem;
+            text-align: center;
+        }
+
+        .filter-btn {
+            border: 2px solid var(--secondary);
+            background: transparent;
+            color: var(--primary);
+            padding: 10px 25px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(224, 192, 116, 0.4);
+        }
+
+        /* --- 5. GALLERY GRID --- */
+        .gallery-container {
+            padding: 2rem 5% 5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .dest-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            opacity: 1; /* For JS animation */
+        }
+
+        .dest-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-img-box {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-box img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .dest-card:hover .card-img-box img { transform: scale(1.1); }
+
+        .category-badge {
+            position: absolute;
+            top: 15px; left: 15px;
+            background: rgba(20, 54, 44, 0.9);
+            color: var(--secondary);
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-body { padding: 20px; }
+
+        .card-title {
+            font-size: 1.4rem; color: var(--primary); margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.95rem; color: #777; margin-bottom: 20px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #eee; padding-top: 15px;
+        }
+
+        .location { font-size: 0.9rem; color: #999; }
+        .location i { color: var(--secondary); margin-right: 5px; }
+
+        .view-btn {
+            text-decoration: none; color: var(--primary); font-weight: 600;
+            font-size: 0.9rem; transition: 0.3s;
+        }
+        .view-btn:hover { color: var(--secondary); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--primary); color: white; text-align: center;
+            padding: 2rem; margin-top: 2rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute; top: var(--nav-height); left: 0; width: 100%;
+                background: white; flex-direction: column; align-items: center;
+                padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                clip-path: circle(0% at 100% 0); transition: 0.5s ease-in-out;
+            }
+            .nav-links.active { clip-path: circle(150% at 100% 0); }
+            .header-content h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-mountain"></i> YALA
+        </a>
+        
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">หน้าหลัก</a></li>
+            <li><a href="info.html" class="nav-link">ข้อมูลจังหวัด</a></li>
+            <li><a href="destinations.html" class="nav-link active">สถานที่ท่องเที่ยว</a></li>
+            <li><a href="culture.html" class="nav-link">วัฒนธรรม</a></li>
+            <li><a href="contact.html" class="nav-btn">ติดต่อเรา</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <div class="header-content">
+            <h1>สถานที่ท่องเที่ยว</h1>
+            <p>สัมผัสความงามที่ซ่อนอยู่ ตั้งแต่ยอดเขาจรดปลายน้ำ</p>
+        </div>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterSelection('all')">ทั้งหมด</button>
+        <button class="filter-btn" onclick="filterSelection('nature')">ธรรมชาติ</button>
+        <button class="filter-btn" onclick="filterSelection('history')">ประวัติศาสตร์</button>
+        <button class="filter-btn" onclick="filterSelection('city')">ในเมือง/แลนด์มาร์ค</button>
+    </div>
+
+    <div class="gallery-container">
+        <div class="gallery-grid">
+            
+            <div class="dest-card nature">
+                <div class="card-img-box">
+                    <span class="category-badge">Nature</span>
+                    <img src="https://thailandtourismdirectory.go.th/assets/upload/2021/01/14/20210114979e89d107874944c68205f25972049e102235.jpg" alt="Skywalk">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">สกายวอล์ค อัยเยอร์เวง</h3>
+                    <p class="card-desc">จุดชมทะเลหมอกที่สวยที่สุดในภาคใต้ ชมวิวได้ 360 องศา บนพื้นกระจกใส</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.เบตง</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dest-card nature">
+                <div class="card-img-box">
+                    <span class="category-badge">Nature</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq4F4x3R28tK7-NqJ_kH7K_kP_kL_kM_kN_A&s" alt="Winter Flowers">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">สวนไม้ดอกเมืองหนาว</h3>
+                    <p class="card-desc">สวนดอกไม้นานาพันธุ์ท่ามกลางหุบเขา อากาศเย็นสบายตลอดปีเหมือนอยู่ต่างประเทศ</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.เบตง</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dest-card history">
+                <div class="card-img-box">
+                    <span class="category-badge">History</span>
+                    <img src="https://ik.imagekit.io/tvlk/blog/2022/10/Piyamit-Tunnel-1.jpg" alt="Piyamit Tunnel">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">อุโมงค์ปิยะมิตร</h3>
+                    <p class="card-desc">อุโมงค์ดินประวัติศาสตร์ที่เคยเป็นฐานปฏิบัติการ ภายในมีนิทรรศการและของใช้ในอดีต</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.เบตง</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dest-card city">
+                <div class="card-img-box">
+                    <span class="category-badge">City</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Yala_City_Pillar_Shrine_01.jpg/800px-Yala_City_Pillar_Shrine_01.jpg" alt="City Pillar">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">ศาลหลักเมืองยะลา</h3>
+                    <p class="card-desc">ศูนย์รวมใจชาวเมือง ตั้งอยู่ใจกลางวงเวียนผังเมืองที่สวยงาม เป็นที่พักผ่อนหย่อนใจ</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.เมือง</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dest-card nature">
+                <div class="card-img-box">
+                    <span class="category-badge">Nature</span>
+                    <img src="https://thailandtourismdirectory.go.th/assets/upload/2017/11/05/20171105c31758c067856e79768600d8924b8923145434.jpg" alt="Hala Bala">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">ป่าฮาลา-บาลา</h3>
+                    <p class="card-desc">อเมซอนแห่งเอเชีย ผืนป่าดิบชื้นที่สมบูรณ์ เป็นบ้านของนกเงือกและสัตว์ป่าหายาก</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.ธารโต</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dest-card city">
+                <div class="card-img-box">
+                    <span class="category-badge">Landmark</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhT6a-Yk5z-CgKzCqE4hKjXlXmNnO_pQrS_g&s" alt="Betong Clock Tower">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">หอนาฬิกาเบตง</h3>
+                    <p class="card-desc">สัญลักษณ์คู่บ้านคู่เมือง สร้างด้วยหินอ่อนเก่าแก่ ยามค่ำคืนจะมีนกนางแอ่นนับพันเกาะสายไฟ</p>
+                    <div class="card-footer">
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> อ.เบตง</span>
+                        <a href="#" class="view-btn">ดูแผนที่ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Yala Destinations. Created for Educational Purpose.</p>
+    </footer>
+
+    <script>
+        // 1. Mobile Menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // 2. Filter Function
+        function filterSelection(category) {
+            const cards = document.getElementsByClassName("dest-card");
+            const btns = document.getElementsByClassName("filter-btn");
+
+            // Update Active Button
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].classList.remove("active");
+                if (btns[i].getAttribute("onclick").includes(category)) {
+                    btns[i].classList.add("active");
+                }
+            }
+
+            // Show/Hide Cards
+            for (let i = 0; i < cards.length; i++) {
+                if (category === "all" || cards[i].classList.contains(category)) {
+                    cards[i].style.display = "block";
+                    // Animation reset
+                    cards[i].style.opacity = "0";
+                    setTimeout(() => cards[i].style.opacity = "1", 50);
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
