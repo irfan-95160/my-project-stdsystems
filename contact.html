@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดต่อเรา | Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. THEME SETUP --- */
+        :root {
+            --primary: #14362c;
+            --secondary: #e0c074;
+            --light: #fdfdfd;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --nav-height: 80px;
+            --transition: 0.4s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* --- 2. NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: var(--primary); text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .logo i { color: var(--secondary); }
+        
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        
+        .nav-link {
+            text-decoration: none; color: var(--dark); font-weight: 500;
+            position: relative; padding: 5px 0; transition: var(--transition);
+        }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            background: var(--secondary); bottom: 0; left: 0; transition: 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: var(--primary); font-weight: 700; }
+        
+        .nav-btn {
+            background: var(--primary); color: white; padding: 10px 25px;
+            border-radius: 50px; text-decoration: none; font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-btn:hover { background: var(--secondary); color: var(--primary); }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; color: var(--primary); }
+
+        /* --- 3. HERO --- */
+        .contact-hero {
+            height: 40vh;
+            background-color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white;
+            padding-top: var(--nav-height);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0c074' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .contact-hero h1 { font-size: 3rem; margin-bottom: 10px; }
+
+        /* --- 4. CONTACT CONTAINER --- */
+        .contact-wrapper {
+            max-width: 1200px; margin: -50px auto 50px;
+            padding: 0 20px; position: relative; z-index: 10;
+        }
+
+        .contact-card-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 30px; margin-bottom: 50px;
+        }
+
+        .info-card {
+            background: white; padding: 40px 20px; text-align: center;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition); border-top: 4px solid var(--secondary);
+        }
+        
+        .info-card:hover { transform: translateY(-10px); }
+        
+        .info-icon {
+            width: 60px; height: 60px; background: #f4f8f7; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px; font-size: 1.5rem; color: var(--primary);
+        }
+
+        .info-card h3 { margin-bottom: 10px; color: var(--primary); font-size: 1.2rem; }
+        .info-card p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+
+        /* --- 5. FORM & MAP SECTION --- */
+        .form-map-section {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            background: white; padding: 40px; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+
+        .form-header h2 { font-size: 2rem; color: var(--primary); margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--dark); }
+        
+        .form-control {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd;
+            border-radius: 8px; font-family: 'Prompt', sans-serif;
+            transition: 0.3s; background: #fdfdfd;
+        }
+        
+        .form-control:focus {
+            outline: none; border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(224, 192, 116, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 15px 30px; border-radius: 50px; cursor: pointer;
+            font-size: 1rem; font-weight: 600; transition: var(--transition);
+            width: 100%;
+        }
+        
+        .submit-btn:hover { background: var(--secondary); color: var(--primary); }
+
+        .map-frame {
+            width: 100%; height: 100%; min-height: 400px;
+            border-radius: 15px; overflow: hidden; border: 1px solid #eee;
+        }
+        
+        .map-frame iframe { width: 100%; height: 100%; border: 0; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--dark); color: #888; text-align: center;
+            padding: 2rem; margin-top: 5rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .contact-card-grid { grid-template-columns: 1fr; }
+            .form-map-section { grid-template-columns: 1fr; }
+            .map-frame { height: 300px; }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute; top: var(--nav-height); left: 0; width: 100%;
+                background: white; flex-direction: column; align-items: center;
+                padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                clip-path: circle(0% at 100% 0); transition: 0.5s ease-in-out;
+            }
+            .nav-links.active { clip-path: circle(150% at 100% 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-mountain"></i> YALA
+        </a>
+        
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">หน้าหลัก</a></li>
+            <li><a href="info.html" class="nav-link">ข้อมูลจังหวัด</a></li>
+            <li><a href="destinations.html" class="nav-link">สถานที่ท่องเที่ยว</a></li>
+            <li><a href="culture.html" class="nav-link">วัฒนธรรม</a></li>
+            <li><a href="contact.html" class="nav-link active">ติดต่อเรา</a></li>
+        </ul>
+    </nav>
+
+    <header class="contact-hero">
+        <div class="hero-content">
+            <h1>ติดต่อสอบถาม</h1>
+            <p>พร้อมให้บริการข้อมูลการท่องเที่ยวตลอด 24 ชั่วโมง</p>
+        </div>
+    </header>
+
+    <div class="contact-wrapper">
+        
+        <div class="contact-card-grid">
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <h3>ที่อยู่</h3>
+                <p>สำนักงานการท่องเที่ยวและกีฬาจังหวัดยะลา<br>ถ.วงเวียน 2 อ.เมือง จ.ยะลา 95000</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                <h3>เบอร์โทรศัพท์</h3>
+                <p>073-123-456<br>081-999-9999 (สายด่วน)</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                <h3>อีเมล</h3>
+                <p>info@yala-tourism.go.th<br>support@yala-guide.com</p>
+            </div>
+        </div>
+
+        <div class="form-map-section">
+            <div class="contact-form">
+                <div class="form-header">
+                    <h2>ส่งข้อความถึงเรา</h2>
+                    <p style="color: #777; margin-bottom: 20px;">หากมีข้อสงสัยหรือต้องการแนะนำสถานที่ท่องเที่ยว สามารถกรอกแบบฟอร์มด้านล่าง</p>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('ขอบคุณสำหรับข้อความ! เราจะติดต่อกลับโดยเร็วที่สุด');">
+                    <div class="form-group">
+                        <label class="form-label">ชื่อ - นามสกุล</label>
+                        <input type="text" class="form-control" placeholder="ระบุชื่อของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">อีเมล</label>
+                        <input type="email" class="form-control" placeholder="example@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">หัวข้อเรื่อง</label>
+                        <select class="form-control">
+                            <option>สอบถามข้อมูลท่องเที่ยว</option>
+                            <option>แนะนำสถานที่</option>
+                            <option>แจ้งปัญหาการใช้งาน</option>
+                            <option>อื่นๆ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ข้อความ</label>
+                        <textarea class="form-control" rows="5" placeholder="รายละเอียด..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">ส่งข้อความ <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+
+            <div class="map-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31704.673413346453!2d101.26786638541818!3d6.541306353347065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b3195980a31699%3A0xf0225d309060410!2sYala%20City!5e0!3m2!1sen!2sth!4v1700000000000!5m2!1sen!2sth" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Yala Tourism Office. Website Designed for Educational Purpose.</p>
+        <div style="margin-top: 10px;">
+            <a href="#" style="color: #888; margin: 0 10px;"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="#" style="color: #888; margin: 0 10px;"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="#" style="color: #888; margin: 0 10px;"><i class="fab fa-line fa-lg"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+</html>
