@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วัฒนธรรมและอาหาร | Yala Culture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. THEME SETUP --- */
+        :root {
+            --primary: #14362c;
+            --secondary: #e0c074;
+            --light: #fdfdfd;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --nav-height: 80px;
+            --transition: 0.4s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #fdfcf8; /* Creamy background for culture feel */
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* --- 2. NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            color: var(--primary); text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .logo i { color: var(--secondary); }
+        
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        
+        .nav-link {
+            text-decoration: none; color: var(--dark); font-weight: 500;
+            position: relative; padding: 5px 0; transition: var(--transition);
+        }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            background: var(--secondary); bottom: 0; left: 0; transition: 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: var(--primary); font-weight: 700; }
+        
+        .nav-btn {
+            background: var(--primary); color: white; padding: 10px 25px;
+            border-radius: 50px; text-decoration: none; font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-btn:hover { background: var(--secondary); color: var(--primary); }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; color: var(--primary); }
+
+        /* --- 3. HERO SECTION --- */
+        .hero-culture {
+            height: 50vh;
+            /* รูปไก่เบตงหรือวัฒนธรรม */
+            background: linear-gradient(rgba(20, 54, 44, 0.8), rgba(20, 54, 44, 0.6)),
+                        url('https://thailandtourismdirectory.go.th/assets/upload/2017/11/22/20171122a21066c6ae9422f280a56247c1b5003c144558.jpg');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center; color: white;
+            padding-top: var(--nav-height);
+        }
+
+        .hero-culture h1 { font-size: 3.5rem; margin-bottom: 15px; }
+        .hero-subtitle { font-size: 1.2rem; color: var(--secondary); letter-spacing: 2px; text-transform: uppercase; }
+
+        /* --- 4. FOOD SECTION --- */
+        .content-section { padding: 5rem 10%; }
+        
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
+        .divider { width: 60px; height: 3px; background: var(--secondary); margin: 0 auto; }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .food-img { width: 100%; height: 200px; object-fit: cover; }
+        
+        .food-content { padding: 25px; }
+        .food-title { font-size: 1.3rem; color: var(--primary); margin-bottom: 10px; }
+        .food-desc { font-size: 0.9rem; color: #666; line-height: 1.6; }
+
+        /* --- 5. CULTURE SPLIT SECTION (Zig-Zag) --- */
+        .culture-row {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 6rem;
+        }
+
+        .culture-row.reverse { flex-direction: row-reverse; }
+
+        .culture-text { flex: 1; }
+        .culture-text h3 { font-size: 2rem; color: var(--primary); margin-bottom: 20px; }
+        
+        .culture-img { 
+            flex: 1; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 20px 20px 0 rgba(224, 192, 116, 0.3);
+        }
+        .culture-img img { width: 100%; display: block; transition: transform 0.5s; }
+        .culture-img:hover img { transform: scale(1.05); }
+
+        /* --- 6. FESTIVAL CARDS --- */
+        .festival-container {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 10%;
+            border-radius: 30px;
+            margin: 0 2% 4rem;
+        }
+
+        .festival-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; margin-top: 3rem;
+        }
+
+        .fest-item {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: var(--transition);
+        }
+
+        .fest-item:hover { background: rgba(255,255,255,0.2); }
+
+        .fest-date {
+            color: var(--secondary); font-weight: 700; font-size: 0.9rem;
+            display: block; margin-bottom: 10px;
+        }
+
+        .fest-title { font-size: 1.2rem; margin-bottom: 10px; font-weight: 600; }
+        .fest-desc { font-size: 0.9rem; opacity: 0.8; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--dark); color: #999; text-align: center;
+            padding: 2rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute; top: var(--nav-height); left: 0; width: 100%;
+                background: white; flex-direction: column; align-items: center;
+                padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                clip-path: circle(0% at 100% 0); transition: 0.5s ease-in-out;
+            }
+            .nav-links.active { clip-path: circle(150% at 100% 0); }
+            
+            .hero-culture h1 { font-size: 2.5rem; }
+            .culture-row, .culture-row.reverse { flex-direction: column; gap: 30px; margin-bottom: 4rem; }
+            .culture-img { width: 100%; box-shadow: 10px 10px 0 rgba(224, 192, 116, 0.3); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-mountain"></i> YALA
+        </a>
+        
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html" class="nav-link">หน้าหลัก</a></li>
+            <li><a href="info.html" class="nav-link">ข้อมูลจังหวัด</a></li>
+            <li><a href="destinations.html" class="nav-link">สถานที่ท่องเที่ยว</a></li>
+            <li><a href="culture.html" class="nav-link active">วัฒนธรรม</a></li>
+            <li><a href="contact.html" class="nav-btn">ติดต่อเรา</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero-culture">
+        <h1>วิถีถิ่น กินอร่อย</h1>
+        <span class="hero-subtitle">Culture & Gastronomy</span>
+    </header>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>ของดีเมืองยะลา</h2>
+            <div class="divider"></div>
+            <p style="margin-top: 15px; color: #777;">รสชาติที่เป็นเอกลักษณ์และหาทานได้ยาก</p>
+        </div>
+
+        <div class="food-grid">
+            <div class="food-card">
+                <img src="https://img.wongnai.com/p/1920x0/2020/09/20/c229344421b046099b247f15e81d115e.jpg" alt="Betong Chicken" class="food-img">
+                <div class="food-content">
+                    <h3 class="food-title">ไก่เบตง (Betong Chicken)</h3>
+                    <p class="food-desc">ราชาแห่งไก่ เนื้อแน่น หนังกรอบ ไขมันน้อย เป็นสายพันธุ์พิเศษที่เลี้ยงในเบตงเท่านั้น นิยมทำไก่สับราดซีอิ๊ว</p>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://mpics.mgronline.com/pics/Images/563000007802801.JPEG" alt="Noodles" class="food-img">
+                <div class="food-content">
+                    <h3 class="food-title">หมี่เบตง (Mee Betong)</h3>
+                    <p class="food-desc">เส้นหมี่เหลืองทำมือ เหนียวนุ่ม ผัดแห้งหรือทำเป็นซุปก็อร่อย เป็นภูมิปัญญาชาวจีนกวางไสที่สืบทอดมายาวนาน</p>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://static.thairath.co.th/media/dFQROr7oWzulq5FZXUz0g1XlY0x0QJ0m54vW1Y4r7j4w.jpg" alt="Som Chogun" class="food-img">
+                <div class="food-content">
+                    <h3 class="food-title">ส้มโชกุน (Shogun Orange)</h3>
+                    <p class="food-desc">ผลไม้ขึ้นชื่อ รสชาติหวานอมเปรี้ยว กลิ่นหอม เปลือกล่อน ปลูกมากในพื้นที่อำเภอเบตง</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" style="background-color: #fff; padding-top: 4rem;">
+        
+        <div class="culture-row">
+            <div class="culture-text">
+                <h3>พหุวัฒนธรรมที่งดงาม</h3>
+                <p>ยะลาเป็นเมืองที่มีการผสมผสานทางวัฒนธรรมอย่างลงตัว ทั้งชาวไทยพุทธ ชาวไทยมุสลิม และชาวไทยเชื้อสายจีน 
+                คุณจะเห็นวัด มัสยิด และศาลเจ้า ตั้งอยู่ร่วมกันอย่างสันติ สะท้อนผ่านวิถีชีวิต การแต่งกาย และประเพณีต่างๆ</p>
+            </div>
+            <div class="culture-img">
+                <img src="https://thailandtourismdirectory.go.th/assets/upload/2021/11/03/20211103d162788523c963a35a60e8697666270b144616.jpg" alt="Culture Harmony">
+            </div>
+        </div>
+
+        <div class="culture-row reverse">
+            <div class="culture-text">
+                <h3>เมืองแห่งนกเขาชวาเสียง</h3>
+                <p>ยะลาขึ้นชื่อว่าเป็นเมืองหลวงของ "นกเขาชวาเสียง" ทุกปีจะมีการจัดงานมหกรรมแข่งขันนกเขาชวาเสียงอาเซียน 
+                ซึ่งดึงดูดผู้คนจากมาเลเซีย สิงคโปร์ และอินโดนีเซีย มาร่วมประชันเสียงนกที่ไพเราะเสนาะหู</p>
+            </div>
+            <div class="culture-img">
+                <img src="https://thailandtourismdirectory.go.th/assets/upload/2017/11/22/20171122a21066c6ae9422f280a56247c1b5003c144558.jpg" alt="Bird Festival">
+            </div>
+        </div>
+
+    </section>
+
+    <div class="festival-container">
+        <h2 style="text-align: center;">ปฏิทินงานประเพณี</h2>
+        <p style="text-align: center; color: var(--secondary);">กิจกรรมที่ไม่ควรพลาดตลอดปี</p>
+        
+        <div class="festival-grid">
+            <div class="fest-item">
+                <span class="fest-date">มีนาคม</span>
+                <h4 class="fest-title">งานมหกรรมนกเขาชวาเสียง</h4>
+                <p class="fest-desc">การแข่งขันนกเขาที่ยิ่งใหญ่ที่สุดในอาเซียน ณ สวนขวัญเมือง</p>
+            </div>
+            <div class="fest-item">
+                <span class="fest-date">พฤษภาคม</span>
+                <h4 class="fest-title">งานสมโภชหลักเมือง</h4>
+                <p class="fest-desc">งานกาชาดและสมโภชศาลหลักเมืองยะลา ชมขบวนแห่และมหรสพ</p>
+            </div>
+            <div class="fest-item">
+                <span class="fest-date">สิงหาคม</span>
+                <h4 class="fest-title">เทศกาลไก่เบตง</h4>
+                <p class="fest-desc">งานเทศกาลอาหารและของดีเมืองเบตง ลิ้มรสไก่เบตงแท้ๆ</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Yala Culture & Gastronomy. Created for Educational Purpose.</p>
+    </footer>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+</body>
+</html>
