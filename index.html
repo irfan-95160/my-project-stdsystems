@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yala Premium Journey | เที่ยวยะลาในมุมมองใหม่</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --primary-color: #1a3c34; /* Dark Emerald Green - ธรรมชาติ */
+            --accent-color: #d4af37; /* Metallic Gold - ความหรูหรา */
+            --text-dark: #333333;
+            --text-light: #f4f4f4;
+            --bg-body: #f9f8f6; /* Cream/Off-white */
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --transition: all 0.4s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif; /* หัวข้อใช้ฟอนต์หรูหรา */
+            letter-spacing: 1px;
+        }
+
+        /* --- 2. HEADER / HERO SECTION --- */
+        header {
+            height: 100vh;
+            background: linear-gradient(rgba(26, 60, 52, 0.7), rgba(26, 60, 52, 0.5)), 
+                        url('https://images.unsplash.com/photo-1590653664369-0775d78a8731?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); /* รูปทะเลหมอกอัยเยอร์เวง (Placeholder) */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .hero-content {
+            z-index: 2;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+
+        .btn-gold {
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-gold:hover {
+            background: var(--accent-color);
+            color: #fff;
+            transform: translateY(-5px);
+        }
+
+        /* --- 3. INFOGRAPHIC STATS SECTION --- */
+        .stats-section {
+            padding: 5rem 10%;
+            background: #fff;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            transform: translateY(-50px); /* Overlap header slightly */
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .stat-item i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .stat-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* --- 4. INTERACTIVE DESTINATIONS --- */
+        .destination-section {
+            padding: 4rem 10%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            border: none;
+            background: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            color: #888;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        /* Grid Layout */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0; /* Hidden initially for JS reveal */
+            transform: translateY(20px);
+        }
+
+        .card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-img-wrapper {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-tag {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ccc;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .like-btn.liked {
+            color: #e74c3c;
+        }
+
+        /* --- 5. INFO-GRAPHIC STYLE SECTION (TIMELINE/PROCESS) --- */
+        .journey-section {
+            background: var(--primary-color);
+            color: white;
+            padding: 5rem 10%;
+            margin-top: 4rem;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .timeline-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--primary-color);
+            box-shadow: 0 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #111;
+            color: #888;
+            padding: 3rem 10%;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .stats-section { grid-template-columns: 1fr; margin: 0 1rem; }
+            .timeline { flex-direction: column; }
+            .timeline-item::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="hero-content">
+            <h1 class="hero-title">YALA</h1>
+            <p class="hero-subtitle">มนต์เสน่ห์แห่งปลายด้ามขวาน</p>
+            <a href="#destinations" class="btn-gold">ค้นหาประสบการณ์</a>
+        </div>
+    </header>
+
+    <section class="stats-section">
+        <div class="stat-item">
+            <i class="fas fa-mountain"></i>
+            <span class="stat-number">365</span>
+            <span class="stat-desc">วันแห่งหมอกที่อัยเยอร์เวง</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-map-marked-alt"></i>
+            <span class="stat-number">1</span>
+            <span class="stat-desc">ผังเมืองที่สวยที่สุดในไทย</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-dove"></i>
+            <span class="stat-number">100+</span>
+            <span class="stat-desc">สายพันธุ์นกเงือกในป่าฮาลา-บาลา</span>
+        </div>
+    </section>
+
+    <section id="destinations" class="destination-section">
+        <div class="section-header">
+            <h2>แลนด์มาร์คยอดนิยม</h2>
+            <p style="color: #888;">เลือกประเภทสถานที่ที่คุณสนใจ</p>
+        </div>
+
+        <div class="filter-controls">
+            <button class="filter-btn active" onclick="filterSelection('all')">ทั้งหมด</button>
+            <button class="filter-btn" onclick="filterSelection('nature')">ธรรมชาติ</button>
+            <button class="filter-btn" onclick="filterSelection('culture')">วัฒนธรรม</button>
+            <button class="filter-btn" onclick="filterSelection('adventure')">ผจญภัย</button>
+        </div>
+
+        <div class="gallery">
+            <div class="card nature adventure">
+                <div class="card-img-wrapper">
+                    <img src="https://thailandtourismdirectory.go.th/assets/upload/2021/01/14/20210114979e89d107874944c68205f25972049e102235.jpg" alt="Skywalk" class="card-img">
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">Adventure / Nature</span>
+                    <h3 class="card-title">สกายวอล์ค อัยเยอร์เวง</h3>
+                    <p class="card-desc">จุดชมทะเลหมอกสุดอลังการบนระเบียงพื้นกระจก ชมวิวได้รอบทิศทาง 360 องศา</p>
+                    <div class="card-footer">
+                        <small><i class="fas fa-map-marker-alt"></i> เบตง, ยะลา</small>
+                        <button class="like-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card nature">
+                <div class="card-img-wrapper">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq4F4x3R28tK7-NqJ_kH7K_kP_kL_kM_kN_A&s" alt="Winter Flower" class="card-img">
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">Nature</span>
+                    <h3 class="card-title">สวนไม้ดอกเมืองหนาว</h3>
+                    <p class="card-desc">ความงามแห่งพฤกษานานาพันธุ์ ท่ามกลางหุบเขาและอากาศเย็นสบายตลอดปี</p>
+                    <div class="card-footer">
+                        <small><i class="fas fa-map-marker-alt"></i> เบตง, ยะลา</small>
+                        <button class="like-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card culture">
+                <div class="card-img-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Yala_City_Pillar_Shrine_01.jpg/800px-Yala_City_Pillar_Shrine_01.jpg" alt="City Pillar" class="card-img">
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">Culture</span>
+                    <h3 class="card-title">ศาลหลักเมืองยะลา</h3>
+                    <p class="card-desc">ศูนย์รวมจิตใจของชาวเมือง ออกแบบด้วยสถาปัตยกรรมที่งดงามและโดดเด่น</p>
+                    <div class="card-footer">
+                        <small><i class="fas fa-map-marker-alt"></i> เมืองยะลา</small>
+                        <button class="like-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card adventure history">
+                <div class="card-img-wrapper">
+                    <img src="https://ik.imagekit.io/tvlk/blog/2022/10/Piyamit-Tunnel-1.jpg" alt="Tunnel" class="card-img">
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">History / Adventure</span>
+                    <h3 class="card-title">อุโมงค์ปิยะมิตร</h3>
+                    <p class="card-desc">ย้อนรอยประวัติศาสตร์ในอุโมงค์ดินความยาวกว่า 1 กิโลเมตร ที่เคยเป็นฐานที่มั่น</p>
+                    <div class="card-footer">
+                        <small><i class="fas fa-map-marker-alt"></i> เบตง, ยะลา</small>
+                        <button class="like-btn" onclick="toggleLike(this)"><i class="fas fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="journey-section">
+        <div class="section-header">
+            <h2 style="color:white;">แนะนำเส้นทาง</h2>
+            <p style="color: var(--accent-color);">1 Day Trip in Betong</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-cloud-sun"></i></div>
+                <h3>05:30 AM</h3>
+                <p>ชมทะเลหมอกที่อัยเยอร์เวง</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-utensils"></i></div>
+                <h3>08:00 AM</h3>
+                <p>ทานติ่มซำและไก่เบตง</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-tree"></i></div>
+                <h3>13:00 PM</h3>
+                <p>เดินชมอุโมงค์ปิยะมิตร</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon"><i class="fas fa-camera"></i></div>
+                <h3>17:00 PM</h3>
+                <p>ถ่ายรูป Street Art เบตง</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Created by Expert Programmer for Yala Tourism Promotion</p>
+        <p>© 2024 Yala Premium Journey. All rights reserved.</p>
+        <div style="font-size: 1.5rem; margin-top: 1rem;">
+            <i class="fab fa-facebook" style="margin: 0 10px;"></i>
+            <i class="fab fa-instagram" style="margin: 0 10px;"></i>
+            <i class="fab fa-twitter" style="margin: 0 10px;"></i>
+        </div>
+    </footer>
+
+    <script>
+        // 1. FILTER FUNCTIONALITY
+        filterSelection("all");
+
+        function filterSelection(c) {
+            var x, i;
+            x = document.getElementsByClassName("card");
+            
+            // Update Active Button
+            var btns = document.getElementsByClassName("filter-btn");
+            for (i = 0; i < btns.length; i++) {
+                btns[i].classList.remove("active");
+                if (btns[i].getAttribute("onclick").includes(c)) {
+                    btns[i].classList.add("active");
+                }
+            }
+
+            // Show/Hide Items
+            if (c == "all") c = "";
+            for (i = 0; i < x.length; i++) {
+                removeClass(x[i], "show");
+                if (x[i].className.indexOf(c) > -1) {
+                    // Add small delay for nice transition
+                    setTimeout((el) => {
+                         addClass(el, "show");
+                    }, 50 * i, x[i]);
+                } else {
+                    x[i].style.display = "none";
+                }
+            }
+        }
+
+        function addClass(element, name) {
+            var arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            element.style.display = "block"; // Reset display before animating
+            for (i = 0; i < arr2.length; i++) {
+                if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+            }
+        }
+
+        function removeClass(element, name) {
+            var arr1, arr2;
+            arr1 = element.className.split(" ");
+            arr2 = name.split(" ");
+            for (i = 0; i < arr2.length; i++) {
+                while (arr1.indexOf(arr2[i]) > -1) {
+                    arr1.splice(arr1.indexOf(arr2[i]), 1);     
+                }
+            }
+            element.className = arr1.join(" ");
+        }
+
+        // 2. INTERACTIVE LIKE BUTTON
+        function toggleLike(btn) {
+            btn.classList.toggle("liked");
+            if(btn.classList.contains("liked")) {
+                btn.innerHTML = '<i class="fas fa-heart"></i>';
+            } else {
+                btn.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        }
+
+        // 3. SCROLL REVEAL ANIMATION (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        });
+
+        const hiddenElements = document.querySelectorAll('.card'); 
+        // Note: In real setup, you might want to observe section headers too
+    </script>
+</body>
+</html>
