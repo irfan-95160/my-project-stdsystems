@@ -310,9 +310,152 @@
             .timeline { flex-direction: column; }
             .timeline-item::after { display: none; }
         }
+        /* --- NAVIGATION BAR STYLES --- */
+        html {
+            scroll-behavior: smooth; /* เลื่อนหน้าแบบนุ่มนวลเมื่อกดเมนู */
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+            transition: var(--transition);
+            background: transparent; /* เริ่มต้นแบบโปร่งใส */
+        }
+
+        /* คลาสนี้จะถูกเติมด้วย JS เมื่อเลื่อนหน้าจอ */
+        .navbar.scrolled {
+            background: var(--primary-color);
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-list li {
+            margin-left: 30px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        /* เส้นขีดสีทองวิ่งใต้เมนูเมื่อ Hover */
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            transition: 0.3s;
+        }
+
+        .nav-list a:hover::after {
+            width: 100%;
+        }
+
+        .nav-list a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Mobile Menu Icon */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-light);
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+
+        /* --- RESPONSIVE MENU --- */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-list {
+                position: absolute;
+                top: 70px; /* ความสูงของ Navbar */
+                right: -100%; /* ซ่อนไปทางขวา */
+                width: 100%;
+                height: 100vh;
+                background: var(--primary-color);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: 0.5s ease;
+            }
+
+            .nav-list.active {
+                right: 0; /* เลื่อนออกมา */
+            }
+
+            .nav-list li {
+                margin: 20px 0;
+            }
+
+            .nav-list a {
+                font-size: 1.5rem;
+            }
+            
+            /* Animation สำหรับปุ่ม Hamburger เป็นกากบาท */
+            .menu-toggle.is-active .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .menu-toggle.is-active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.is-active .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
     </style>
 </head>
 <body>
+    <nav class="navbar" id="navbar">
+        <div class="logo">YALA JOURNEY</div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-list" id="nav-list">
+            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="#destinations">สถานที่ท่องเที่ยว</a></li>
+            <li><a href="#journey">แผนการเดินทาง</a></li>
+            <li><a href="#contact">ติดต่อเรา</a></li>
+        </ul>
+    </nav>
 
     <header>
         <div class="hero-content">
@@ -530,6 +673,32 @@
 
         const hiddenElements = document.querySelectorAll('.card'); 
         // Note: In real setup, you might want to observe section headers too
+
+        // 4. NAVBAR SCROLL EFFECT
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 5. MOBILE MENU TOGGLE
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            mobileMenu.classList.toggle('is-active');
+        });
+
+        // ปิดเมนูเมื่อคลิกเลือกรายการ (สำหรับมือถือ)
+        document.querySelectorAll('.nav-list a').forEach(n => n.addEventListener('click', () => {
+            navList.classList.remove('active');
+            mobileMenu.classList.remove('is-active');
+        }));
     </script>
 </body>
 </html>
